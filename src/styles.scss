@@ -1,0 +1,16 @@
+
+@import '~@angular/material/theming';
+@import 'default-theme.scss';
+
+@include mat-core();
+
+@import 'app/app.component.scss-theme';
+
+@mixin custom-components-theme($theme) {
+  @include epam-app-component-theme($theme);
+}
+
+.default-theme {
+  @include angular-material-theme($epam-theme);
+  @include custom-components-theme($epam-theme);
+}
