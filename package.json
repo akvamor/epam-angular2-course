@@ -9,7 +9,15 @@
     "build:prod": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "watch": "ng test --browsers ChromeHeadless --reporters spec",
+    "build:prod": "ng build --target production --aot --build-optimizer --vendor-chunk --extract-css --output-hashing all --stats-json",
+    "build:travisci": "ng build --target production --aot --build-optimizer --vendor-chunk --extract-css --output-hashing all --stats-json --deploy-url /angular-ngrx-material-starter/ --base-href /angular-ngrx-material-starter",
+    "clean": "rm -rf ./dist/",
+    "server": "cd dist && http-server",
+    "prod": "npm run clean && npm run build:prod && npm run server",
+    "ci": "npm run clean && ng lint && ng test --browser ChromeTravisCi --single-run --reporters spec && npm run build:travisci",
+    "release": "standard-version && git push --follow-tags origin master"
   },
   "private": true,
   "dependencies": {
