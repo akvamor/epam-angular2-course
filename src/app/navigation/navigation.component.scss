@@ -1,0 +1,20 @@
+.epam-navigation{
+  height: auto;
+
+  &-card-header-image {
+    background-image: url('/assets/logo.png');
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+  }
+
+  &-breadcrumbs {
+    margin-left: 30px;
+    font-size: 13px;
+  }
+
+  &-user {
+    font-size: 13px;
+    line-height: 20px;
+  }
+}

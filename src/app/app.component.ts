@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 const DEFAULT_THEME = 'default-theme';
@@ -6,7 +6,8 @@ const DEFAULT_THEME = 'default-theme';
 @Component({
   selector: 'epam-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent  implements OnInit {
   @HostBinding('class') componentCssClass;

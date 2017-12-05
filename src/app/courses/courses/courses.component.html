@@ -1,7 +1,22 @@
-<p>
-  courses works!
-</p>
-
-<div class="content">
-  <router-outlet #o="outlet"></router-outlet>
+<div fxFlex fxLayout="column">
+  <mat-toolbar class="epam-courses-toolbar" color="accent">
+    <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+      <div fxFlex="50%" fxLayout class="epam-courses-toolbar-search">
+        <form (submit)="search(searchInput.value)" fxFlex>
+          <mat-form-field fxFlex>
+            <input matInput [value]="searchText$ | async" #searchInput placeholder="Name fragment or date">
+          </mat-form-field>
+          <button type="submit" mat-button>Search</button>
+        </form>
+      </div>
+      <div fxFlex="50%" fxLayout fxLayoutAlign="end center" class="epam-courses-toolbar-add">
+        <button mat-button>Add course</button>
+      </div>
+    </div>
+  </mat-toolbar>
+  
+  <div class="content" fxFlex>
+    <router-outlet #o="outlet"></router-outlet>
+    <!-- <epam-courses-list></epam-courses-list> -->
+  </div>
 </div>

@@ -14,3 +14,8 @@
   @include angular-material-theme($epam-theme);
   @include custom-components-theme($epam-theme);
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}

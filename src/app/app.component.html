@@ -1,5 +1,10 @@
-<epam-navigation></epam-navigation>
-<div class="content">
-  <router-outlet #o="outlet"></router-outlet>
+<div class="container"
+   fxLayout="column"
+   fxLayoutAlign="none"
+   fxFlexFill>
+  <epam-navigation fxFlex="100px"></epam-navigation>
+  <div fxFlex>
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
+  <epam-footer fxFlex="64px"></epam-footer>
 </div>
-<epam-footer></epam-footer>

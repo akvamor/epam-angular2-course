@@ -17,6 +17,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +37,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatListModule,
     MatMenuModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+
+    FlexLayoutModule,
   ],
   declarations: [],
   exports: [
@@ -55,7 +59,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSelectModule,
     MatToolbarModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+
+    FlexLayoutModule,
   ]
 })
 export class SharedModule {}

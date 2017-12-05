@@ -7,6 +7,7 @@ import { CourseFormComponent } from './course-form/course-form.component';
 import { CoursesRoutingModule } from './courses-routing.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { CoursesListComponent } from './courses-list/courses-list.component';
+import { CoursesService } from './shared/courses.service';
 
 @NgModule({
   imports: [
@@ -18,7 +19,10 @@ import { CoursesListComponent } from './courses-list/courses-list.component';
     CoursesComponent,
     CourseDetailsComponent,
     CourseFormComponent,
-    CoursesListComponent
+    CoursesListComponent,
+  ],
+  providers: [
+    CoursesService,
   ]
 })
 export class CoursesModule {

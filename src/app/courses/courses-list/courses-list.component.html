@@ -1,3 +1,18 @@
-<p>
-  courses-list works!
-</p>
+<mat-card class="epam-courses-list-card" *ngFor="let course of courses$ | async" >
+  <mat-card-header>
+    <div mat-card-avatar></div>
+    <mat-card-title fxFlex fxLayout fxLayoutAlign="space-between center">
+      <div>{{course.title}}</div>
+      <div>{{course.order}}</div>
+      <div>{{course.videoDetails?.length}}</div>
+      <div>{{course.date | date:'fullDate'}}</div>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{course.description}}</p>
+  </mat-card-content>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+    <button mat-button (click)="edit(course)">EDIT</button>
+    <button mat-button (click)="delete(course)">DELETE</button>
+  </mat-card-actions>
+</mat-card>

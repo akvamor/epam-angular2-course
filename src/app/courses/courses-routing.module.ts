@@ -8,15 +8,19 @@ const routes: Routes = [
   {
     path: '',
     component: CoursesComponent,
+    data: {
+      breadcrumb: 'Courses',
+    },
     children: [{
       path: '',
       redirectTo: 'list',
-      pathMatch: 'full'
+      pathMatch: 'full',
     }, {
       path: 'list',
       component: CoursesListComponent,
       data: {
-        title: 'Courses'
+        title: 'Courses',
+        breadcrumb: 'List',
       }
     }]
   }
