@@ -1,5 +1,7 @@
+import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-dialog.component';
 import { AngularFirestoreCollection, QueryFn } from 'angularfire2/firestore';
 import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable, ObservableInput } from 'rxjs/Observable';
 import { ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
@@ -16,7 +18,7 @@ import { CoursesService } from './../shared/courses.service';
 export class CoursesListComponent implements OnInit {
   public courses$: ObservableInput<Course[]>;
 
-  constructor(private coursesService: CoursesService, private route: ActivatedRoute) { }
+  constructor(public dialog: MatDialog, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.courses$ = this.coursesService.findCoursesBySearchText(
@@ -26,8 +28,18 @@ export class CoursesListComponent implements OnInit {
   }
 
   delete(course: Course) {
-    console.log(course);
-    // TODO: remove course.
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        message: 'Do you really want to delete this course?',
+        width: '200px',
+        height: '200px',
+      }
+    });
+    this.dialog.afterAllClosed.subscribe((result) => {
+      if (result) {
+        this.coursesService.delete(course.id);
+      }
+    });
   }
 
   edit(course: Course) {

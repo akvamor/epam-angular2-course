@@ -9,8 +9,8 @@
       Courses
     </div>
   </div>
-  <div class="epam-navigation-user" fxFlex fxLayout="column" fxLayoutAlign="space-evenly end">
-    <span>user: login</span>
-    <span>logoff</span>
+  <div *ngIf="authService.user | async" class="epam-navigation-user" fxFlex fxLayout="column" fxLayoutAlign="space-evenly end">
+    <span>user: {{(authService.user | async)?.email}}</span>
+    <button (click)="authService.signOut()">logoff</button>
   </div>
 </mat-toolbar>

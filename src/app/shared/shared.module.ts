@@ -1,7 +1,10 @@
+import { AFSDecorator } from './afs.decorator';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
@@ -24,6 +27,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     FormsModule,
 
+    MatDialogModule,
     MatButtonModule,
     MatToolbarModule,
     MatSelectModule,
@@ -41,11 +45,16 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
     FlexLayoutModule,
   ],
-  declarations: [],
+  declarations: [ConfirmDialogComponent],
+  entryComponents: [ConfirmDialogComponent],
+  providers: [
+    AFSDecorator,
+  ],
   exports: [
     CommonModule,
     FormsModule,
 
+    MatDialogModule,
     MatButtonModule,
     MatMenuModule,
     MatTabsModule,

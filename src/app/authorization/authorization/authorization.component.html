@@ -1,0 +1,27 @@
+<form class="epam-authorization-container" [formGroup]="userForm" (ngSubmit)="!newUser ? login() : signup()" fxLayout fxLayoutAlign="center center">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ newUser ? 'New User Signup' : 'Sign in' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+      <mat-form-field>
+        <input type="email" matInput placeholder="Email" formControlName="email" required>
+        <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" matInput formControlName="password" placeholder="Password" required>
+        <mat-error *ngIf="formErrors.password">{{ formErrors.password }}</mat-error>
+      </mat-form-field>
+      <span class="mat-error" *ngIf="(serverMessage | async)">{{(serverMessage | async )}}</span>
+    </mat-card-content>
+    <mat-card-actions fxLayout>
+      <form>
+        <button mat-button (click)="toggleForm()">
+          {{ newUser ? 'Already Registered?' : 'Registration' }}
+        </button>
+        <button mat-button (click)="signInWithGoogle()">Google Sign In</button>
+      </form>
+      <button type="submit" mat-button [disabled]="!userForm.valid">Submit</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
