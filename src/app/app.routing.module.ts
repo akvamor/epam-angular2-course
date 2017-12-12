@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: 'app/authorization/authorization.module#AuthorizationComponent'
+    loadChildren: 'app/authorization/authorization.module#AuthorizationModule'
   }
 ];
 

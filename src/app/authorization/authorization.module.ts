@@ -14,6 +14,8 @@ import { CoreModule } from '@app/core/core.module';
     ReactiveFormsModule,
     CoreModule,
   ],
-  declarations: [AuthorizationComponent]
+  declarations: [
+    AuthorizationComponent,
+  ]
 })
 export class AuthorizationModule { }
