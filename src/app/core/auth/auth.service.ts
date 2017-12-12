@@ -1,13 +1,14 @@
-import { EmailPasswordCredentials } from './email-password-credentials';
 import { Observable } from 'rxjs/Observable';
-import { User } from './user';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import 'rxjs/add/operator/switchMap'
+
 import { AFSDecorator } from '@app/shared/afs.decorator';
+import { EmailPasswordCredentials } from './email-password-credentials';
+import { User } from './user';
 
 @Injectable()
 export class AuthService {
@@ -59,14 +60,14 @@ export class AuthService {
 
   resetPassword(email: string) {
     return this.afAuth.auth.sendPasswordResetEmail(email)
-      .catch((error) => { throw error; })
+      .catch((error) => { throw error; });
   }
 
   private oAuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
         this.updateUserData(credential.user)
-      })
+      });
   }
 
   private updateUserData(user: firebase.User) {
@@ -76,6 +77,6 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL
     }
-    return userRef.set(data)
+    return userRef.set(data);
   }
 }

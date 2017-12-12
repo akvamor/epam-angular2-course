@@ -1,4 +1,3 @@
-import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -11,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { SharedModule } from './shared/shared.module';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { CoreModule } from './core/core.module';
 
 // Initialize Firebase
 export const firebaseConfig = {

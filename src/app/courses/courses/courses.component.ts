@@ -21,7 +21,7 @@ export class CoursesComponent implements OnInit {
   }
 
   search(searchText: string) {
-    this.router.navigate(['courses/list'], {queryParams: {query: searchText}});
+    this.router.navigate(['courses/list'], { queryParams: { query: searchText } });
   }
 
 }

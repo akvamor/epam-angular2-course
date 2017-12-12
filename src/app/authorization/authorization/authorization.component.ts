@@ -1,10 +1,10 @@
 import { Router } from '@angular/router';
-import { AuthService } from './../../core/auth/auth.service';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { setTimeout } from 'timers';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import { AuthService } from './../../core/auth/auth.service';
 
 @Component({
   selector: 'epam-authorization',

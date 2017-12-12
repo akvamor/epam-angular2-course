@@ -1,4 +1,3 @@
-import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-dialog.component';
 import { AngularFirestoreCollection, QueryFn } from 'angularfire2/firestore';
 import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -8,6 +7,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { Course } from './../shared/course.model';
 import { CoursesService } from './../shared/courses.service';
+import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'epam-courses-list',
