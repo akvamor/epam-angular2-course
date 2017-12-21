@@ -11,7 +11,6 @@ export class UserProfileComponent implements OnInit {
 
   constructor(public auth: AuthService) { }
 
-  ngOnInit() {
-  }
+  public ngOnInit() { }
 
 }

@@ -16,7 +16,7 @@ export class CoursesService {
 
   constructor(private afs: AngularFirestore, private afsd: AFSDecorator<Course>) { }
 
-  findCoursesBySearchText(query$: Observable<string>): ObservableInput<Course[]> {
+  public findCoursesBySearchText(query$: Observable<string>): ObservableInput<Course[]> {
     return query$.switchMap((query) => this.afs.collection(CoursesService.COLLECTION_NAME,
       (ref: firebase.firestore.CollectionReference) => {
       let queryRef = ref.orderBy('title');
@@ -31,19 +31,19 @@ export class CoursesService {
     })));
   }
 
-  create(courseId: string, course: Course) {
+  public create(courseId: string, course: Course) {
     return this.afsd.createDocument(CoursesService.COLLECTION_NAME, courseId, course);
   }
 
-  get(courseId: string): AngularFirestoreDocument<Course> {
+  public get(courseId: string): AngularFirestoreDocument<Course> {
     return this.afsd.getDocument(CoursesService.COLLECTION_NAME, courseId);
   }
 
-  update(courseId: string, course: Course) {
+  public update(courseId: string, course: Course) {
     this.afsd.updateDocument(CoursesService.COLLECTION_NAME, courseId, course);
   }
 
-  delete(courseId: string) {
+  public delete(courseId: string) {
     this.afsd.deleteDocument(CoursesService.COLLECTION_NAME, courseId);
   }
 }

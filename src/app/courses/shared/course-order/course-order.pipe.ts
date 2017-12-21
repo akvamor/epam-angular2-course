@@ -1,12 +1,13 @@
-import { Course } from './../course.model';
 import { Pipe, PipeTransform } from '@angular/core';
+
+import { Course } from './../course.model';
 
 @Pipe({
   name: 'courseOrder'
 })
 export class CourseOrderPipe implements PipeTransform {
 
-  transform(courses: Array<Course>, field: string, direction: string): Array<Course> {
+  public transform(courses: Array<Course>, field: string, direction: string): Array<Course> {
     if (!courses) {
       return courses;
     }
@@ -36,5 +37,4 @@ export class CourseOrderPipe implements PipeTransform {
       return 0;
     }
   }
-
 }

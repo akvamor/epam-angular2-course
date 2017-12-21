@@ -14,7 +14,7 @@ export class AppComponent  implements OnInit {
 
   constructor(public overlayContainer: OverlayContainer) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.componentCssClass = DEFAULT_THEME;
     this.overlayContainer.getContainerElement().classList.add(DEFAULT_THEME);
   }

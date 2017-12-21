@@ -14,13 +14,13 @@ export class CoursesComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.searchText$ = this.route.queryParams.map((params: Params) => {
       return params['query'] ? params['query'] : '';
     });
   }
 
-  search(searchText: string) {
+  public search(searchText: string) {
     this.router.navigate(['courses/list'], { queryParams: { query: searchText } });
   }
 

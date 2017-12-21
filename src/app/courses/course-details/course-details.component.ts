@@ -10,5 +10,5 @@ export class CourseDetailsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  public ngOnInit() { }
 }

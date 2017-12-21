@@ -20,14 +20,14 @@ export class CoursesListComponent implements OnInit {
 
   constructor(public dialog: MatDialog, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.courses$ = this.coursesService.findCoursesBySearchText(
       this.route.queryParams.map((params: Params) => {
         return params['query'] ? params['query'] : '';
       }));
   }
 
-  delete(course: Course) {
+  public delete(course: Course) {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
         message: 'Do you really want to delete this course?',
@@ -42,7 +42,7 @@ export class CoursesListComponent implements OnInit {
     });
   }
 
-  edit(course: Course) {
+  public edit(course: Course) {
     console.log(course);
     // TODO: add course.
   }

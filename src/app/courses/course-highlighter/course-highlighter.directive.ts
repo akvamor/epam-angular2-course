@@ -1,7 +1,7 @@
-import { element } from 'protractor';
-import { Course } from './../shared/course.model';
 import { Directive, Input, ElementRef, HostBinding } from '@angular/core';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+
+import { Course } from './../shared/course.model';
 
 import * as moment from 'moment';
 
@@ -15,9 +15,9 @@ export class CourseHighlighterDirective implements OnChanges {
   @HostBinding('class.epam-course-highlighter-new') isNew: boolean;
   @HostBinding('class.epam-course-highlighter-upcoming') isUpcoming: boolean;
 
-  get courseClass() { return 'epam-course-highlighter-highlight'};
+  private get courseClass() { return 'epam-course-highlighter-highlight'};
 
-  ngOnChanges() {
+  public ngOnChanges() {
     if (!this.course.date) {
       this.isNew = false;
       this.isUpcoming = false;
