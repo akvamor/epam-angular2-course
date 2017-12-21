@@ -1,5 +1,6 @@
 @import '~@angular/material/theming';
+@import './courses/courses-theme.module.scss-theme';
 
 @mixin epam-app-component-theme($theme) {
-
+  @include epam-courses-module-theme($theme);
 }

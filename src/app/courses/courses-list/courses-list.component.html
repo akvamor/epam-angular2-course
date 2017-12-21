@@ -1,10 +1,10 @@
-<mat-card class="epam-courses-list-card" *ngFor="let course of courses$ | async" >
+<mat-card class="epam-courses-list-card" *ngFor="let course of courses$ | async | courseOrder: 'date': 'desc'" epamCourseHighlighter [course]="course">
   <mat-card-header>
     <div mat-card-avatar></div>
     <mat-card-title fxFlex fxLayout fxLayoutAlign="space-between center">
-      <div>{{course.title}}</div>
+      <div>{{course.title | uppercase }}</div>
       <div>{{course.order}}</div>
-      <div>{{course.videoDetails?.length}}</div>
+      <div>{{course.videoDetails?.length | duration}}</div>
       <div>{{course.date | date:'fullDate'}}</div>
     </mat-card-title>
   </mat-card-header>
@@ -15,4 +15,9 @@
     <button mat-button (click)="edit(course)">EDIT</button>
     <button mat-button (click)="delete(course)">DELETE</button>
   </mat-card-actions>
+</mat-card>
+<mat-card class="epam-courses-list-card" *ngIf="!(courses$ | async)?.length">
+  <mat-card-content>
+    <p>No data. Feel free to add a new course.</p>
+  </mat-card-content>
 </mat-card>

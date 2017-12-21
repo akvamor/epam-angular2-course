@@ -1,0 +1,7 @@
+@import '~@angular/material/theming';
+
+@import './course-highlighter/course-highlighter.directive.scss-theme';
+
+@mixin epam-courses-module-theme($theme) {
+  @include epam-course-highlighter-directive-theme($theme);
+}

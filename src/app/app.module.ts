@@ -39,10 +39,6 @@ export const firebaseConfig = {
     SharedModule,
     AppRoutingModule
   ],
-  exports: [
-    CoreModule,
-  ],
-  providers: [  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
