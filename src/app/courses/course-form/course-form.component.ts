@@ -10,7 +10,6 @@ export class CourseFormComponent implements OnInit {
 
   constructor() { }
 
-  public ngOnInit() {
-  }
+  public ngOnInit() { }
 
 }

@@ -1,9 +1,7 @@
-import { Directive, Input, ElementRef, HostBinding } from '@angular/core';
-import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Directive, Input, ElementRef, HostBinding, OnChanges } from '@angular/core';
+import * as moment from 'moment';
 
 import { Course } from './../shared/course.model';
-
-import * as moment from 'moment';
 
 @Directive({
   selector: '[epamCourseHighlighter]'
@@ -15,7 +13,7 @@ export class CourseHighlighterDirective implements OnChanges {
   @HostBinding('class.epam-course-highlighter-new') isNew: boolean;
   @HostBinding('class.epam-course-highlighter-upcoming') isUpcoming: boolean;
 
-  private get courseClass() { return 'epam-course-highlighter-highlight'};
+  private get courseClass() { return 'epam-course-highlighter-highlight' };
 
   public ngOnChanges() {
     if (!this.course.date) {
