@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Course } from './../shared/course.model';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
 
 @Component({
   selector: 'epam-course-details',
@@ -8,7 +10,18 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class CourseDetailsComponent implements OnInit {
 
-  constructor() { }
+  public course: Course;
 
-  public ngOnInit() { }
+  constructor(
+    public dialogRef: MatDialogRef<CourseDetailsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
+
+  public ngOnInit() {
+    if (!this.data.course) {
+      this.dialogRef.close(false);
+    } else {
+      this.course = {...this.data.course}
+    }
+  }
 }

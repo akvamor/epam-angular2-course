@@ -1,3 +1,29 @@
-<p>
-  course-details works!
-</p>
+<mat-dialog-content>
+  <div class="epam-course-details-content" fxFlex fxFlexLayout="column">
+    <mat-form-field>
+      <input [(ngModel)]="course.title" matInput placeholder="Title">
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea [(ngModel)]="course.description" matInput placeholder="Description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker3" placeholder="Choose a date" [value]="course.date" (dateChange)="course.date = $event.value">
+      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+      <mat-datepicker #picker3></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [(ngModel)]="course.videoDetails.length" matInput type="number" placeholder="Video Length">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [(ngModel)]="course.order" matInput type="number" placeholder="Order">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close(course)">Save</button>
+  <button mat-button (click)="dialogRef.close(false)">Cancel</button>
+</mat-dialog-actions>

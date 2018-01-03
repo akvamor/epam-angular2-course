@@ -22,12 +22,15 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AFSDecorator } from './afs.decorator';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
 
+    MatNativeDateModule,
+    MatDatepickerModule,
     MatDialogModule,
     MatButtonModule,
     MatToolbarModule,
@@ -55,6 +58,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     CommonModule,
     FormsModule,
 
+    MatNativeDateModule,
+    MatDatepickerModule,
     MatDialogModule,
     MatButtonModule,
     MatMenuModule,

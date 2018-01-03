@@ -1,3 +1,4 @@
+import { CourseDetailsComponent } from './../course-details/course-details.component';
 import { AngularFirestoreCollection, QueryFn } from 'angularfire2/firestore';
 import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -28,14 +29,14 @@ export class CoursesListComponent implements OnInit {
   }
 
   public delete(course: Course) {
-    this.dialog.open(ConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         message: 'Do you really want to delete this course?',
         width: '200px',
         height: '200px',
       }
     });
-    this.dialog.afterAllClosed.subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.coursesService.delete(course.id);
       }
@@ -43,7 +44,15 @@ export class CoursesListComponent implements OnInit {
   }
 
   public edit(course: Course) {
-    console.log(course);
-    // TODO: add course.
+    const courseDialogRef = this.dialog.open(CourseDetailsComponent, {
+      data: {
+        course: course
+      }
+    });
+    courseDialogRef.afterClosed().subscribe((courseAfterChanges: Course) => {
+      if (courseAfterChanges) {
+        this.coursesService.update(courseAfterChanges.id, courseAfterChanges);
+      }
+    });
   }
 }
