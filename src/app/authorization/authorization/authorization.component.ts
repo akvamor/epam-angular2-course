@@ -36,39 +36,39 @@ export class AuthorizationComponent implements OnInit {
   serverMessage = new BehaviorSubject<string>(null);
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.buildForm();
     this.authService.user.filter((user) => !!user).take(1).subscribe((user) => {
       this.router.navigate(['/']);
     });
   }
 
-  toggleForm(): void {
+  public toggleForm(): void {
     this.newUser = !this.newUser;
   }
 
-  signInWithGoogle(): void {
+  public signInWithGoogle(): void {
     this.authService.googleLogin();
   };
 
-  signup(): void {
+  public signup(): void {
     this.authService.emailSignUp(this.userForm.value).catch((error) => {
       this.serverMessage.next(error.message);
     });
   }
 
-  login(): void {
+  public login(): void {
     this.authService.emailLogin(this.userForm.value).catch((error) => {
       this.serverMessage.next(error.message);
     })
   }
 
-  resetPassword() {
+  public resetPassword() {
     this.authService.resetPassword(this.userForm.value['email'])
       .then(() => this.passReset = true)
   }
 
-  buildForm(): void {
+  public buildForm(): void {
     this.userForm = this.fb.group({
       'email': ['', [
         Validators.required,
@@ -84,7 +84,7 @@ export class AuthorizationComponent implements OnInit {
     this.onValueChanged(); // reset validation messages
   }
 
-  onValueChanged(data?: any) {
+  public onValueChanged(data?: any) {
     this.serverMessage.next(null);
     if (!this.userForm) { return; }
     const form = this.userForm;

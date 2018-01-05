@@ -55,4 +55,8 @@ export class CoursesListComponent implements OnInit {
       }
     });
   }
+
+  public trackFn(index, course) {
+    return course ? course.id : null;
+  }
 }

@@ -34,7 +34,7 @@ export class AuthService {
       });
   }
 
-  emailSignUp(credentials: EmailPasswordCredentials): Promise<any> {
+  public emailSignUp(credentials: EmailPasswordCredentials): Promise<any> {
     return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password)
       .then((user: firebase.User) => {
         this.afsd.createDocument(AuthService.COLLECTION_NAME, user.uid, { email: user.email });
@@ -42,23 +42,23 @@ export class AuthService {
       .catch(error => { throw error; });
   }
 
-  emailLogin(credentials: EmailPasswordCredentials): Promise<any> {
+  public emailLogin(credentials: EmailPasswordCredentials): Promise<any> {
     return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)
       .catch(error => { throw error; });
   }
 
-  googleLogin() {
+  public googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider()
     return this.oAuthLogin(provider);
   }
 
-  signOut() {
+  public signOut() {
     this.afAuth.auth.signOut().then(() => {
       window.location.reload();
     });
   }
 
-  resetPassword(email: string) {
+  public resetPassword(email: string) {
     return this.afAuth.auth.sendPasswordResetEmail(email)
       .catch((error) => { throw error; });
   }
