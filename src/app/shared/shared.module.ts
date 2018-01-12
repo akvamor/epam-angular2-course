@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -46,6 +47,7 @@ import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
     MatMenuModule,
     MatIconModule,
     MatTooltipModule,
+    MatSlideToggleModule,
 
     FlexLayoutModule,
   ],
@@ -75,6 +77,7 @@ import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
     MatToolbarModule,
     MatIconModule,
     MatTooltipModule,
+    MatSlideToggleModule,
 
     FlexLayoutModule,
   ]

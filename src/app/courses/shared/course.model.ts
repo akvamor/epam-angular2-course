@@ -3,7 +3,7 @@ export interface Course {
   type?: CourseType,
   title?: string,
   description?: string,
-  date?: number,
+  date?: Date,
   order?: number,
   videoDetails?: VideoDetails
 }

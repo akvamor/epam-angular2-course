@@ -1,14 +1,18 @@
+import { Subject } from 'rxjs/Subject';
+import { CourseFilter, EqualOperator } from './../shared/course-filter';
 import { CourseDetailsComponent } from './../course-details/course-details.component';
 import { AngularFirestoreCollection, QueryFn } from 'angularfire2/firestore';
 import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSlideToggleChange } from '@angular/material';
 import { Observable, ObservableInput } from 'rxjs/Observable';
 import { ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
+import * as moment from 'moment';
 
 import { Course } from './../shared/course.model';
 import { CoursesService } from './../shared/courses.service';
 import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-dialog.component';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'epam-courses-list',
@@ -17,7 +21,9 @@ import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-di
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoursesListComponent implements OnInit {
-  public courses$: ObservableInput<Course[]>;
+  public courses$: Observable<Course[]>;
+  public courseFilter$ = new ReplaySubject<CourseFilter>();
+  public filterDate = false;
 
   constructor(public dialog: MatDialog, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
@@ -25,7 +31,8 @@ export class CoursesListComponent implements OnInit {
     this.courses$ = this.coursesService.findCoursesBySearchText(
       this.route.queryParams.map((params: Params) => {
         return params['query'] ? params['query'] : '';
-      }));
+      }), this.courseFilter$);
+    this.changeFilterDate({checked: this.filterDate} as MatSlideToggleChange);
   }
 
   public delete(course: Course) {
@@ -58,5 +65,16 @@ export class CoursesListComponent implements OnInit {
 
   public trackFn(index, course) {
     return course ? course.id : null;
+  }
+
+  public changeFilterDate(slideToggle: MatSlideToggleChange) {
+    if (slideToggle.checked) {
+      this.courseFilter$.next({
+        date: moment().subtract(14, 'days').toDate(),
+        dateEqualOperator: EqualOperator.LESS
+      })
+    } else {
+      this.courseFilter$.next(null);
+    }
   }
 }
