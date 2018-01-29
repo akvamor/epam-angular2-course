@@ -1,5 +1,8 @@
 <mat-slide-toggle [checked]="filterDate" (change)="changeFilterDate($event)">Last 14 days</mat-slide-toggle>
-<mat-card class="epam-courses-list-card" *ngFor="let course of courses$ | async| courseOrder: 'date': 'desc'; trackBy: trackFn" epamCourseHighlighter [course]="course">
+<mat-card class="epam-courses-list-card"
+  *ngFor="let course of (courses$ | async)?.courses | courseOrder: 'date': 'desc'; trackBy: trackFn" 
+  epamCourseHighlighter
+  [course]="course">
   <mat-card-header>
     <div mat-card-avatar></div>
     <mat-card-title fxFlex fxLayout fxLayoutAlign="space-between center">
@@ -17,7 +20,12 @@
     <button mat-button (click)="delete(course)">DELETE</button>
   </mat-card-actions>
 </mat-card>
-<mat-card class="epam-courses-list-card" *ngIf="!(courses$ | async)?.length">
+<mat-paginator *ngIf="(courses$ | async)?.courses.length && courseFilter.paginator"
+  [pageSize]="limit"
+  [length]="(totalCount$ | async)"
+  (page)="changePage($event)">
+</mat-paginator>
+<mat-card class="epam-courses-list-card" *ngIf="!(courses$ | async)?.courses.length">
   <mat-card-content>
     <p>No data. Feel free to add a new course.</p>
   </mat-card-content>

@@ -1,18 +1,22 @@
 import { Subject } from 'rxjs/Subject';
-import { CourseFilter, EqualOperator } from './../shared/course-filter';
+import { CourseFilter, EqualOperator, PagingCoursesData, Paginator } from './../shared/course-filter';
 import { CourseDetailsComponent } from './../course-details/course-details.component';
 import { AngularFirestoreCollection, QueryFn } from 'angularfire2/firestore';
 import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSlideToggleChange } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSlideToggleChange, PageEvent } from '@angular/material';
 import { Observable, ObservableInput } from 'rxjs/Observable';
 import { ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import * as moment from 'moment';
 
 import { Course } from './../shared/course.model';
 import { CoursesService } from './../shared/courses.service';
 import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-dialog.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { switchMap } from 'rxjs/operator/switchMap';
+import { map } from 'rxjs/operator/map';
 
 @Component({
   selector: 'epam-courses-list',
@@ -21,18 +25,34 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoursesListComponent implements OnInit {
-  public courses$: Observable<Course[]>;
-  public courseFilter$ = new ReplaySubject<CourseFilter>();
+  readonly limit = 2;
+  public defaultPaginator: Paginator = {
+    limit: this.limit,
+    index: 0,
+    historyDocs: [],
+  };
+  public courses$: Observable<PagingCoursesData>;
+  public courseFilter: CourseFilter = { paginator: this.defaultPaginator };
+  public totalCount$ = this.coursesService.totalCount();
+  public courseFilter$ = new BehaviorSubject<CourseFilter>(this.courseFilter);
   public filterDate = false;
 
   constructor(public dialog: MatDialog, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
   public ngOnInit() {
-    this.courses$ = this.coursesService.findCoursesBySearchText(
-      this.route.queryParams.map((params: Params) => {
-        return params['query'] ? params['query'] : '';
-      }), this.courseFilter$);
-    this.changeFilterDate({checked: this.filterDate} as MatSlideToggleChange);
+    const courseFilterWithSearchText$ = combineLatest(this.route.queryParams, this.courseFilter$).map(
+      ([params, courseFilter]) => {
+        const searchText = params['query'] ? params['query'] : '';
+        courseFilter.searchText = searchText;
+        if (courseFilter.searchText) {
+          delete courseFilter.paginator;
+        } else if (!courseFilter.paginator) {
+          courseFilter.paginator = Object.assign({}, this.defaultPaginator);
+        }
+        return courseFilter;
+      });
+    this.courses$ = this.coursesService.findCoursesByCourseFilter(courseFilterWithSearchText$);
+    this.changeFilterDate({ checked: this.filterDate } as MatSlideToggleChange);
   }
 
   public delete(course: Course) {
@@ -69,12 +89,31 @@ export class CoursesListComponent implements OnInit {
 
   public changeFilterDate(slideToggle: MatSlideToggleChange) {
     if (slideToggle.checked) {
-      this.courseFilter$.next({
-        date: moment().subtract(14, 'days').toDate(),
-        dateEqualOperator: EqualOperator.LESS
-      })
+      this.courseFilter.date = moment().subtract(14, 'days').toDate();
+      this.courseFilter.dateEqualOperator = EqualOperator.MORE;
+      this.courseFilter$.next(this.courseFilter);
     } else {
-      this.courseFilter$.next(null);
+      this.courseFilter.date = null;
+      this.courseFilter.dateEqualOperator = null;
+      this.courseFilter$.next(this.courseFilter);
     }
+  }
+
+  public changePage(pageEvent: PageEvent) {
+    this.courseFilter.searchText = '';
+    this.courses$.take(1).subscribe((pagingCourses: PagingCoursesData) => {
+
+      const direction = pagingCourses.paginator.index < pageEvent.pageIndex ? EqualOperator.MORE : EqualOperator.LESS;
+      const paginator = {
+        limit: pageEvent.pageSize,
+        index: pageEvent.pageIndex,
+        direction: direction,
+        lastDoc: pagingCourses.lastDoc(),
+        prevFirstDoc: pagingCourses.prevFirstDoc(),
+        historyDocs: pagingCourses.historyDocs,
+      };
+      this.courseFilter.paginator = paginator;
+      this.courseFilter$.next(Object.assign({}, this.courseFilter, {paginator: paginator}));
+    });
   }
 }

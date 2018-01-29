@@ -1,6 +1,13 @@
-import { CourseFilter, EqualOperator } from './course-filter';
+import { CourseFilter, EqualOperator, PagingCoursesData, Paginator } from './course-filter';
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  AngularFirestoreDocument,
+  Action,
+  DocumentChangeAction,
+  QueryFn
+} from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { ObservableInput } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
@@ -18,33 +25,64 @@ export class CoursesService {
 
   constructor(private afs: AngularFirestore, private afsd: AFSDecorator<Course>) { }
 
-  public findCoursesBySearchText(query$: Observable<string>, filter$?: Observable<CourseFilter>): Observable<Course[]> {
-    const courses$ = query$.switchMap((query) => this.afs.collection(CoursesService.COLLECTION_NAME,
+  public findCoursesByCourseFilter(filter$?: Observable<CourseFilter>): Observable<PagingCoursesData> {
+    return filter$.switchMap((courseFilter) => this.afs.collection(CoursesService.COLLECTION_NAME,
       (ref: firebase.firestore.CollectionReference) => {
-        let queryRef = ref.orderBy('title');
-        if (query && query.length) {
-          queryRef = queryRef.startAt(query).endAt(query + '\uf8ff');
+        // First query argument
+        let queryRef = ref.orderBy('date', 'desc');
+        if (courseFilter.date) {
+          queryRef = this.getDateRangeQuery(queryRef, courseFilter.dateEqualOperator, courseFilter.date);
+        }
+        if (courseFilter.searchText) {
+          queryRef = this.getSearchTextQuery(ref, courseFilter.searchText);
+        }
+        if (!courseFilter.searchText && courseFilter.paginator) {
+          queryRef = this.getPaginationQuery(queryRef, courseFilter.paginator);
         }
         return queryRef;
       })
       .snapshotChanges()
-      .map(actions => actions.map(action => {
-        const data = action.payload.doc.data() as Course;
-        const id = action.payload.doc.id;
-        return { id, ...data };
-      })));
+      .map(this.actionsCourseMapper(courseFilter.paginator)));
+  }
 
-    if (filter$) {
-      return filter$.switchMap((courseFilter) => {
-        if (courseFilter) {
-          return this.addCoursesFilter(courses$, courseFilter);
-        } else {
-          return courses$;
-        }
-      });
-    } else {
-      return courses$;
+  private getDateRangeQuery(queryRef: firebase.firestore.Query, dateEqualOperator: EqualOperator, date: Date) {
+    switch (dateEqualOperator) {
+      case EqualOperator.MORE:
+        queryRef = queryRef.where('date', '>=', date);
+        break;
+      case EqualOperator.LESS:
+      default:
+        queryRef = queryRef.where('date', '<=', date);
     }
+    return queryRef;
+  }
+
+  private getSearchTextQuery(ref: firebase.firestore.CollectionReference, searchText: string): firebase.firestore.Query {
+    return ref.orderBy('title')
+      .startAt(searchText)
+      .endAt(searchText + '\uf8ff');
+  }
+
+  private getPaginationQuery(queryRef: firebase.firestore.Query, paginator: Paginator): firebase.firestore.Query {
+    if (paginator.lastDoc) {
+      switch (paginator.direction) {
+        case EqualOperator.LESS:
+          if (paginator.prevFirstDoc) {
+            queryRef = queryRef.startAfter(paginator.prevFirstDoc);
+          }
+          break;
+        case EqualOperator.MORE:
+        default:
+          queryRef = queryRef.startAfter(paginator.lastDoc);
+          break;
+      }
+    }
+    queryRef = queryRef.limit(paginator.limit);
+    return queryRef;
+  }
+
+  public totalCount(): Observable<number> {
+    return this.afs.collection(CoursesService.COLLECTION_NAME).valueChanges().map((courses) => courses.length);
   }
 
   public add(course: Course) {
@@ -55,8 +93,14 @@ export class CoursesService {
     return this.afsd.createDocument(CoursesService.COLLECTION_NAME, courseId, course);
   }
 
-  public get(courseId: string): AngularFirestoreDocument<Course> {
-    return this.afsd.getDocument(CoursesService.COLLECTION_NAME, courseId);
+  public get(courseId: string): Observable<Course> {
+    return this.afsd.getDocument(CoursesService.COLLECTION_NAME, courseId)
+      .snapshotChanges()
+      .map((action: Action<firebase.firestore.DocumentSnapshot>) => {
+        const id = action.payload.id;
+        const data = action.payload.data() as Course;
+        return { id, ...data };
+      });
   }
 
   public update(courseId: string, course: Course) {
@@ -67,21 +111,15 @@ export class CoursesService {
     this.afsd.deleteDocument(CoursesService.COLLECTION_NAME, courseId);
   }
 
-  private addCoursesFilter(courses$: Observable<Course[]>, courseFilter: CourseFilter) {
-    return courses$.map((courses) => {
-      if (courseFilter.date) {
-        return courses.filter((course) => {
-          switch (courseFilter.dateEqualOperator) {
-            case EqualOperator.MORE:
-              return moment(course.date.getTime()).isBefore(moment(courseFilter.date.getTime()));
-            case EqualOperator.LESS:
-            default:
-              return moment(course.date.getTime()).isAfter(moment(courseFilter.date.getTime()));
-          }
-        })
-      } else {
-        return courses;
-      }
-    })
+  private actionsCourseMapper(paginator: Paginator) {
+    return (documentChangeActions: DocumentChangeAction[]) => {
+      const courses = documentChangeActions.map(action => {
+        const data = action.payload.doc.data() as Course;
+        const id = action.payload.doc.id;
+        return { id, ...data };
+      });
+      const docs = paginator.historyDocs.concat(documentChangeActions.map((action) => action.payload.doc));
+      return new PagingCoursesData(courses, paginator, docs);
+    };
   }
 }

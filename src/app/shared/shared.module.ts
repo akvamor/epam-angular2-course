@@ -23,7 +23,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AFSDecorator } from './afs.decorator';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
-import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -48,6 +48,7 @@ import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
     MatIconModule,
     MatTooltipModule,
     MatSlideToggleModule,
+    MatPaginatorModule,
 
     FlexLayoutModule,
   ],
@@ -78,6 +79,7 @@ import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
     MatIconModule,
     MatTooltipModule,
     MatSlideToggleModule,
+    MatPaginatorModule,
 
     FlexLayoutModule,
   ]
