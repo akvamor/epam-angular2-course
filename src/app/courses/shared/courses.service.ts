@@ -118,7 +118,10 @@ export class CoursesService {
         const id = action.payload.doc.id;
         return { id, ...data };
       });
-      const docs = paginator.historyDocs.concat(documentChangeActions.map((action) => action.payload.doc));
+      let docs = []
+      if (paginator) {
+        docs = paginator.historyDocs.concat(documentChangeActions.map((action) => action.payload.doc));
+      }
       return new PagingCoursesData(courses, paginator, docs);
     };
   }

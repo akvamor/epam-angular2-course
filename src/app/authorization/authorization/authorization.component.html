@@ -15,12 +15,10 @@
       <span class="mat-error" *ngIf="(serverMessage | async)">{{(serverMessage | async )}}</span>
     </mat-card-content>
     <mat-card-actions fxLayout>
-      <form>
-        <button mat-button (click)="toggleForm()">
-          {{ newUser ? 'Already Registered?' : 'Registration' }}
-        </button>
-        <button mat-button (click)="signInWithGoogle()">Google Sign In</button>
-      </form>
+      <button mat-button (click)="toggleForm()">
+        {{ newUser ? 'Already Registered?' : 'Registration' }}
+      </button>
+      <button mat-button (click)="signInWithGoogle()">Google Sign In</button>
       <button type="submit" mat-button [disabled]="!userForm.valid">Submit</button>
     </mat-card-actions>
   </mat-card>

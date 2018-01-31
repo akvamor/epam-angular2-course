@@ -1,3 +1,4 @@
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -11,12 +12,15 @@ import { CoursesService } from './shared/courses.service';
 import { CourseHighlighterDirective } from './course-highlighter/course-highlighter.directive';
 import { DurationPipe } from './shared/duration/duration.pipe';
 import { CourseOrderPipe } from './shared/course-order/course-order.pipe';
+import { DateComponent } from './shared/date/date.component';
 
 @NgModule({
   imports: [
     CommonModule,
     CoursesRoutingModule,
     SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   declarations: [
     CoursesComponent,
@@ -25,6 +29,7 @@ import { CourseOrderPipe } from './shared/course-order/course-order.pipe';
     CourseHighlighterDirective,
     DurationPipe,
     CourseOrderPipe,
+    DateComponent,
   ],
   entryComponents: [CourseDetailsComponent],
   providers: [

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -28,7 +27,6 @@ import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@a
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
 
     MatNativeDateModule,
     MatDatepickerModule,
@@ -59,7 +57,6 @@ import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@a
   ],
   exports: [
     CommonModule,
-    FormsModule,
 
     MatNativeDateModule,
     MatDatepickerModule,
@@ -84,4 +81,4 @@ import { MatDatepickerModule, MatNativeDateModule, MatPaginatorModule } from '@a
     FlexLayoutModule,
   ]
 })
-export class SharedModule {}
+export class SharedModule { }

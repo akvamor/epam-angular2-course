@@ -14,14 +14,14 @@ import { AuthService } from './../../core/auth/auth.service';
 })
 export class AuthorizationComponent implements OnInit {
 
-  userForm: FormGroup;
-  newUser = false;
-  passReset = false;
-  formErrors = {
+  public userForm: FormGroup;
+  public newUser = false;
+  public passReset = false;
+  public formErrors = {
     'email': '',
     'password': ''
   };
-  validationMessages = {
+  public validationMessages = {
     'email': {
       'required': 'Email is required.',
       'email': 'Email must be a valid email'
@@ -33,7 +33,7 @@ export class AuthorizationComponent implements OnInit {
       'maxlength': 'Password cannot be more than 40 characters long.',
     }
   };
-  serverMessage = new BehaviorSubject<string>(null);
+  public serverMessage = new BehaviorSubject<string>(null);
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
   public ngOnInit(): void {
