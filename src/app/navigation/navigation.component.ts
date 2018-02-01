@@ -25,7 +25,6 @@ export class NavigationComponent implements OnInit {
 
   private buildBreadCrumb(route: ActivatedRoute, url: string = '',
                 breadcrumbs: Array<BreadCrumb> = []): Array<BreadCrumb> {
-                  debugger;
     if (!route.routeConfig) {
       return [];
     }
