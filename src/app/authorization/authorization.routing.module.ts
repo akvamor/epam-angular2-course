@@ -7,6 +7,9 @@ const routes: Routes = [
   {
     path: 'login',
     component: AuthorizationComponent,
+    data: {
+      breadcrumb: 'Login',
+    },
   }
 ];
 

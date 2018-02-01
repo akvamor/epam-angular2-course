@@ -15,6 +15,9 @@ const routes: Routes = [
       path: '',
       redirectTo: 'list',
       pathMatch: 'full',
+      data: {
+        breadcrumb: 'List',
+      },
     }, {
       path: 'list',
       component: CoursesListComponent,

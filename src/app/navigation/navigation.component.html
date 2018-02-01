@@ -6,7 +6,14 @@
     <div class="epam-navigation-card-header-image"></div>
     <h2>LOGO</h2>
     <div class="epam-navigation-breadcrumbs">
-      Courses
+      <ol class="breadcrumb">
+          <li *ngFor="let breadcrumb of breadcrumbs$ | async"
+              class="breadcrumb-item">
+            <a [routerLink]="[breadcrumb.url, breadcrumb.params]">
+              {{ breadcrumb.label }}
+            </a>
+          </li>
+        </ol>
     </div>
   </div>
   <div *ngIf="authService.user | async" class="epam-navigation-user" fxFlex fxLayout="column" fxLayoutAlign="space-evenly end">

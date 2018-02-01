@@ -8,12 +8,18 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'courses',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    data: {
+      breadcrumb: 'List',
+    },
   },
   {
     path: 'courses',
     loadChildren: 'app/courses/courses.module#CoursesModule',
-    canActivateChild: [AuthGuard]
+    canActivateChild: [AuthGuard],
+    data: {
+      breadcrumb: 'List',
+    },
   },
   {
     path: 'login',
