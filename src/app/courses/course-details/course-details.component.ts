@@ -1,8 +1,7 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Course } from './../shared/course.model';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'epam-course-details',
@@ -12,7 +11,9 @@ import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/cor
 })
 export class CourseDetailsComponent implements OnInit {
 
-  public course: Course;
+  @Input() public course: Course;
+  @Output() public save = new EventEmitter<Course>();
+  @Output() public cancel = new EventEmitter<Boolean>();
   public courseForm: FormGroup;
   public formErrors = {
     'title': '',
@@ -39,18 +40,9 @@ export class CourseDetailsComponent implements OnInit {
   };
   public serverMessage = new BehaviorSubject<string>(null);
 
-  constructor(
-    public dialogRef: MatDialogRef<CourseDetailsComponent>,
-    private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  constructor(private fb: FormBuilder) { }
 
   public ngOnInit() {
-    if (!this.data.course) {
-      this.dialogRef.close(false);
-    } else {
-      this.course = {...this.data.course}
-    }
     this.buildForm();
   }
 
@@ -99,7 +91,11 @@ export class CourseDetailsComponent implements OnInit {
       videoDetails: {
         length: this.courseForm.controls.videoDetails.value
       }
-    })
-    this.dialogRef.close(course);
+    });
+    this.save.emit(course);
+  }
+
+  public cancelEdit() {
+    this.cancel.emit();
   }
 }

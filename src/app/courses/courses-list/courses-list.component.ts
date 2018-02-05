@@ -1,3 +1,4 @@
+import { CourseDialogComponent } from './../course-dialog/course-dialog.component';
 import { Subject } from 'rxjs/Subject';
 import { CourseFilter, EqualOperator, PagingCoursesData, Paginator } from './../shared/course-filter';
 import { CourseDetailsComponent } from './../course-details/course-details.component';
@@ -5,7 +6,7 @@ import { AngularFirestoreCollection, QueryFn } from 'angularfire2/firestore';
 import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSlideToggleChange, PageEvent } from '@angular/material';
 import { Observable, ObservableInput } from 'rxjs/Observable';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import * as moment from 'moment';
@@ -25,7 +26,7 @@ import { map } from 'rxjs/operator/map';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoursesListComponent implements OnInit {
-  readonly limit = 2;
+  readonly limit = 4;
   public defaultPaginator: Paginator = {
     limit: this.limit,
     index: 0,
@@ -37,7 +38,8 @@ export class CoursesListComponent implements OnInit {
   public courseFilter$ = new BehaviorSubject<CourseFilter>(this.courseFilter);
   public filterDate = false;
 
-  constructor(public dialog: MatDialog, private coursesService: CoursesService, private route: ActivatedRoute) { }
+  constructor(public dialog: MatDialog, private coursesService: CoursesService, private route: ActivatedRoute,
+    private router: Router) { }
 
   public ngOnInit() {
     const courseFilterWithSearchText$ = combineLatest(this.route.queryParams, this.courseFilter$).map(
@@ -71,16 +73,17 @@ export class CoursesListComponent implements OnInit {
   }
 
   public edit(course: Course) {
-    const courseDialogRef = this.dialog.open(CourseDetailsComponent, {
-      data: {
-        course: course
-      }
-    });
-    courseDialogRef.afterClosed().subscribe((courseAfterChanges: Course) => {
-      if (courseAfterChanges) {
-        this.coursesService.update(courseAfterChanges.id, courseAfterChanges);
-      }
-    });
+    this.router.navigate([`/courses/edit/${course.id}`]);
+    // const courseDialogRef = this.dialog.open(CourseDialogComponent, {
+    //   data: {
+    //     course: course
+    //   }
+    // });
+    // courseDialogRef.afterClosed().subscribe((courseAfterChanges: Course) => {
+    //   if (courseAfterChanges) {
+    //     this.coursesService.update(courseAfterChanges.id, courseAfterChanges);
+    //   }
+    // });
   }
 
   public trackFn(index, course) {

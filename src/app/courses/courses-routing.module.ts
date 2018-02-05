@@ -1,3 +1,5 @@
+import { CourseCreateComponent } from './course-create/course-create.component';
+import { CourseEditComponent } from './course-edit/course-edit.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -8,22 +10,21 @@ const routes: Routes = [
   {
     path: '',
     component: CoursesComponent,
-    data: {
-      breadcrumb: 'Courses',
-    },
     children: [{
       path: '',
-      redirectTo: 'list',
+      component: CoursesListComponent,
+    }, {
+      path: 'edit/:id',
+      component: CourseEditComponent,
+      data: {
+        breadcrumb: 'Course Id:'
+      }
+    }, {
+      path: 'new',
+      component: CourseCreateComponent,
       pathMatch: 'full',
       data: {
-        breadcrumb: 'List',
-      },
-    }, {
-      path: 'list',
-      component: CoursesListComponent,
-      data: {
-        title: 'Courses',
-        breadcrumb: 'List',
+        breadcrumb: 'New Course'
       }
     }]
   }

@@ -2,18 +2,20 @@
   <div 
      fxFlex
      fxLayout="row"
-     fxLayoutGap="10px">
+     fxLayoutGap="10px"
+     fxLayoutAlign="start center">
     <div class="epam-navigation-card-header-image"></div>
     <h2>LOGO</h2>
-    <div class="epam-navigation-breadcrumbs">
-      <ol class="breadcrumb">
-          <li *ngFor="let breadcrumb of breadcrumbs$ | async"
-              class="breadcrumb-item">
-            <a [routerLink]="[breadcrumb.url, breadcrumb.params]">
-              {{ breadcrumb.label }}
+    <div class="epam-navigation-breadcrumbs" fxFlex>
+      
+      <mat-list fxLayout="row">
+        <mat-list-item *ngFor="let breadcrumb of breadcrumbs$ | async">
+            <a [routerLink]="breadcrumb.url" mat-button color="accent">
+          {{ breadcrumb.label }}
             </a>
-          </li>
-        </ol>
+            </mat-list-item>
+        </mat-list>
+      
     </div>
   </div>
   <div *ngIf="authService.user | async" class="epam-navigation-user" fxFlex fxLayout="column" fxLayoutAlign="space-evenly end">

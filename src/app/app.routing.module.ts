@@ -10,16 +10,16 @@ const routes: Routes = [
     redirectTo: 'courses',
     pathMatch: 'full',
     data: {
-      breadcrumb: 'List',
-    },
+      breadcrumb: 'Home'
+    }
   },
   {
     path: 'courses',
     loadChildren: 'app/courses/courses.module#CoursesModule',
     canActivateChild: [AuthGuard],
     data: {
-      breadcrumb: 'List',
-    },
+      breadcrumb: 'Courses'
+    }
   },
   {
     path: 'login',

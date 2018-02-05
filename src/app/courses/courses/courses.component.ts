@@ -14,35 +14,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class CoursesComponent implements OnInit {
 
-  public searchText$: Observable<string>;
+  constructor() { }
 
-  constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog,
-    private coursesService: CoursesService) { }
+  public ngOnInit() { }
 
-  public ngOnInit() {
-    this.searchText$ = this.route.queryParams.map((params: Params) => {
-      return params['query'] ? params['query'] : '';
-    });
-  }
-
-  public search(searchText: string) {
-    this.router.navigate(['courses/list'], { queryParams: { query: searchText } });
-  }
-
-  public createCourse() {
-    const courseDialogRef = this.dialog.open(CourseDetailsComponent, {
-      data: {
-        course: {
-          type: CourseType.VIDEO,
-          videoDetails: {}
-        }
-      }
-    })
-    courseDialogRef.afterClosed().subscribe((courseAfterChanges: Course) => {
-      if (courseAfterChanges) {
-        this.coursesService.add(courseAfterChanges);
-      }
-    })
-  }
 
 }

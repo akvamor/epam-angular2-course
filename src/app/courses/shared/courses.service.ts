@@ -99,11 +99,15 @@ export class CoursesService {
       .map((action: Action<firebase.firestore.DocumentSnapshot>) => {
         const id = action.payload.id;
         const data = action.payload.data() as Course;
+        if (!data) {
+          return undefined;
+        }
         return { id, ...data };
       });
   }
 
   public update(courseId: string, course: Course) {
+    delete course.id;
     this.afsd.updateDocument(CoursesService.COLLECTION_NAME, courseId, course);
   }
 

@@ -13,6 +13,10 @@ import { CourseHighlighterDirective } from './course-highlighter/course-highligh
 import { DurationPipe } from './shared/duration/duration.pipe';
 import { CourseOrderPipe } from './shared/course-order/course-order.pipe';
 import { DateComponent } from './shared/date/date.component';
+import { CourseEditComponent } from './course-edit/course-edit.component';
+import { CourseCreateComponent } from './course-create/course-create.component';
+import { CourseDialogComponent } from './course-dialog/course-dialog.component';
+import { CourseSearchComponent } from './course-search/course-search.component';
 
 @NgModule({
   imports: [
@@ -30,8 +34,13 @@ import { DateComponent } from './shared/date/date.component';
     DurationPipe,
     CourseOrderPipe,
     DateComponent,
+    CourseEditComponent,
+    CourseCreateComponent,
+    CourseDetailsComponent,
+    CourseDialogComponent,
+    CourseSearchComponent,
   ],
-  entryComponents: [CourseDetailsComponent],
+  entryComponents: [CourseDialogComponent],
   providers: [
     CoursesService,
   ]

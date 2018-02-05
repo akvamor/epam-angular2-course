@@ -19,26 +19,35 @@ export class NavigationComponent implements OnInit {
 
   public ngOnInit() {
     this.breadcrumbs$ = this.router.events
-    .filter(event => event instanceof NavigationEnd)
-    .map(event => this.buildBreadCrumb(this.activatedRoute.root));
+      .filter(event => event instanceof NavigationEnd)
+      .map(event => this.buildBreadCrumb(this.activatedRoute.root));
   }
 
   private buildBreadCrumb(route: ActivatedRoute, url: string = '',
-                breadcrumbs: Array<BreadCrumb> = []): Array<BreadCrumb> {
-    if (!route.routeConfig) {
-      return [];
-    }
-    const label = route.routeConfig ? route.routeConfig.data[ 'breadcrumb' ] : 'Home';
+    breadcrumbs: Array<BreadCrumb> = []): Array<BreadCrumb> {
+    let label = route.routeConfig && route.routeConfig.data && route.routeConfig.data['breadcrumb'];
     const path = route.routeConfig ? route.routeConfig.path : '';
-    const nextUrl = `${url}${path}/`;
+    let nextUrl = `${url}${path}/`;
+
+    const id = route.snapshot.paramMap.get('id');
+    Array.from(route.snapshot.paramMap.keys).forEach((key) => {
+      const value = route.snapshot.paramMap.get(key);
+      nextUrl = nextUrl.replace(`:${key}`, value);
+      label += ` ${value}`;
+    });
     const breadcrumb = {
-        label: label,
-        url: nextUrl
+      label: label,
+      url: nextUrl
     };
-    const newBreadcrumbs = [ ...breadcrumbs, breadcrumb ];
+    let newBreadcrumbs;
+    if (label) {
+      newBreadcrumbs = [...breadcrumbs, breadcrumb];
+    } else {
+      newBreadcrumbs = [...breadcrumbs];
+    }
     if (route.firstChild) {
-        return this.buildBreadCrumb(route.firstChild, nextUrl, newBreadcrumbs);
+      return this.buildBreadCrumb(route.firstChild, nextUrl, newBreadcrumbs);
     }
     return newBreadcrumbs;
-}
+  }
 }

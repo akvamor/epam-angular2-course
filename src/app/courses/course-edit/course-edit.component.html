@@ -1,0 +1,5 @@
+<epam-course-details *ngIf="course$ | async as course" 
+  [course]="course"
+  (save)="save($event)"
+  (cancel)="cancel($event)">
+</epam-course-details>
