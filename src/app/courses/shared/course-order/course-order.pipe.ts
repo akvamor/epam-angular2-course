@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { Course } from './../course.model';
+import { Course } from '../models/course.model';
 
 @Pipe({
   name: 'courseOrder'

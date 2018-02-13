@@ -1,10 +1,9 @@
-import { Router } from '@angular/router';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {Router} from '@angular/router';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {AuthService} from '@app/core/auth/auth.service';
 
-import { AuthService } from './../../core/auth/auth.service';
 
 @Component({
   selector: 'epam-authorization',
@@ -34,7 +33,9 @@ export class AuthorizationComponent implements OnInit {
     }
   };
   public serverMessage = new BehaviorSubject<string>(null);
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  }
 
   public ngOnInit(): void {
     this.buildForm();
@@ -86,7 +87,9 @@ export class AuthorizationComponent implements OnInit {
 
   public onValueChanged(data?: any) {
     this.serverMessage.next(null);
-    if (!this.userForm) { return; }
+    if (!this.userForm) {
+      return;
+    }
     const form = this.userForm;
     Object.keys(this.formErrors).forEach((field) => {
       // clear previous error message (if any)

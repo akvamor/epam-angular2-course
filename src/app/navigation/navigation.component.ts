@@ -1,9 +1,9 @@
-import { Observable } from 'rxjs/Observable';
-import { BreadCrumb } from './breadcrumb';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {BreadCrumb} from './breadcrumb';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 
-import { AuthService } from './../core/auth/auth.service';
+import {AuthService} from './../core/auth/auth.service';
 
 @Component({
   selector: 'epam-navigation',
@@ -15,16 +15,17 @@ export class NavigationComponent implements OnInit {
 
   public breadcrumbs$: Observable<BreadCrumb[]>;
 
-  constructor(public authService: AuthService, public router: Router, public activatedRoute: ActivatedRoute) { }
+  constructor(public authService: AuthService, public router: Router, public activatedRoute: ActivatedRoute) {
+  }
 
   public ngOnInit() {
     this.breadcrumbs$ = this.router.events
       .filter(event => event instanceof NavigationEnd)
-      .map(event => this.buildBreadCrumb(this.activatedRoute.root));
+      .map(() => this.buildBreadCrumb(this.activatedRoute.root));
   }
 
   private buildBreadCrumb(route: ActivatedRoute, url: string = '',
-    breadcrumbs: Array<BreadCrumb> = []): Array<BreadCrumb> {
+                          breadcrumbs: Array<BreadCrumb> = []): Array<BreadCrumb> {
     let label = route.routeConfig && route.routeConfig.data && route.routeConfig.data['breadcrumb'];
     const path = route.routeConfig ? route.routeConfig.path : '';
     let nextUrl = `${url}${path}/`;

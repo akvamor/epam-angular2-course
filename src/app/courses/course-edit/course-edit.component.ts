@@ -1,7 +1,7 @@
-import { CoursesService } from './../shared/courses.service';
+import { CoursesService } from '../shared/services/courses.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Course } from './../shared/course.model';
+import { Course } from '../shared/models/course.model';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

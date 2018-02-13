@@ -1,23 +1,18 @@
-import { CourseDialogComponent } from './../course-dialog/course-dialog.component';
-import { Subject } from 'rxjs/Subject';
-import { CourseFilter, EqualOperator, PagingCoursesData, Paginator } from './../shared/course-filter';
-import { CourseDetailsComponent } from './../course-details/course-details.component';
-import { AngularFirestoreCollection, QueryFn } from 'angularfire2/firestore';
-import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSlideToggleChange, PageEvent } from '@angular/material';
-import { Observable, ObservableInput } from 'rxjs/Observable';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import {CourseFilter, EqualOperator, Paginator, PagingCoursesData} from '../shared/models/course-filter';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {MatDialog, MatSlideToggleChange, PageEvent} from '@angular/material';
+import {Observable} from 'rxjs/Observable';
+import {ActivatedRoute, Router} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import {combineLatest} from 'rxjs/observable/combineLatest';
 import * as moment from 'moment';
 
-import { Course } from './../shared/course.model';
-import { CoursesService } from './../shared/courses.service';
-import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-dialog.component';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { switchMap } from 'rxjs/operator/switchMap';
-import { map } from 'rxjs/operator/map';
+import {Course} from '../shared/models/course.model';
+import {CoursesService} from '../shared/services/courses.service';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Store} from '@ngrx/store';
+import {coursesCollectionSelector, CoursesState} from '@app/courses/shared/store';
+import {ConfirmDialogComponent} from '@app/shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'epam-courses-list',
@@ -32,14 +27,19 @@ export class CoursesListComponent implements OnInit {
     index: 0,
     historyDocs: [],
   };
-  public courses$: Observable<PagingCoursesData>;
-  public courseFilter: CourseFilter = { paginator: this.defaultPaginator };
-  public totalCount$ = this.coursesService.totalCount();
+  public courseFilter: CourseFilter = {paginator: this.defaultPaginator};
   public courseFilter$ = new BehaviorSubject<CourseFilter>(this.courseFilter);
+  public pagingCourses$: Observable<PagingCoursesData>;
+  public courses$ = this.store.select(coursesCollectionSelector);
+  public totalCount$ = this.coursesService.totalCount();
   public filterDate = false;
 
-  constructor(public dialog: MatDialog, private coursesService: CoursesService, private route: ActivatedRoute,
-    private router: Router) { }
+  constructor(private store: Store<CoursesState>,
+              public dialog: MatDialog,
+              private coursesService: CoursesService,
+              private route: ActivatedRoute,
+              private router: Router) {
+  }
 
   public ngOnInit() {
     const courseFilterWithSearchText$ = combineLatest(this.route.queryParams, this.courseFilter$).map(
@@ -53,8 +53,8 @@ export class CoursesListComponent implements OnInit {
         }
         return courseFilter;
       });
-    this.courses$ = this.coursesService.findCoursesByCourseFilter(courseFilterWithSearchText$);
-    this.changeFilterDate({ checked: this.filterDate } as MatSlideToggleChange);
+    this.pagingCourses$ = this.coursesService.findCoursesByCourseFilter(courseFilterWithSearchText$);
+    this.changeFilterDate({checked: this.filterDate} as MatSlideToggleChange);
   }
 
   public delete(course: Course) {
@@ -104,7 +104,7 @@ export class CoursesListComponent implements OnInit {
 
   public changePage(pageEvent: PageEvent) {
     this.courseFilter.searchText = '';
-    this.courses$.take(1).subscribe((pagingCourses: PagingCoursesData) => {
+    this.pagingCourses$.take(1).subscribe((pagingCourses: PagingCoursesData) => {
 
       const direction = pagingCourses.paginator.index < pageEvent.pageIndex ? EqualOperator.MORE : EqualOperator.LESS;
       const paginator = {

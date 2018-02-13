@@ -1,5 +1,5 @@
-import { CoursesService } from './../shared/courses.service';
-import { CourseType, Course } from './../shared/course.model';
+import { CoursesService } from '../shared/services/courses.service';
+import { CourseType, Course } from '../shared/models/course.model';
 import { CourseDetailsComponent } from './../course-details/course-details.component';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';

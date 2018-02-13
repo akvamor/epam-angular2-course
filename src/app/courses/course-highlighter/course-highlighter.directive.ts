@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef, HostBinding, OnChanges } from '@angular/core';
 import * as moment from 'moment';
 
-import { Course } from './../shared/course.model';
+import { Course } from '../shared/models/course.model';
 
 @Directive({
   selector: '[epamCourseHighlighter]'

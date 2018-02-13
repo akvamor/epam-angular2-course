@@ -1,7 +1,7 @@
 import { CourseDialogComponent } from './../course-dialog/course-dialog.component';
-import { CourseType, Course } from './../shared/course.model';
+import { CourseType, Course } from '../shared/models/course.model';
 import { MatDialog } from '@angular/material';
-import { CoursesService } from './../shared/courses.service';
+import { CoursesService } from '../shared/services/courses.service';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Component, OnInit } from '@angular/core';

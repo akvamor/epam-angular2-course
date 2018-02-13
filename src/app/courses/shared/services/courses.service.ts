@@ -1,29 +1,22 @@
-import { CourseFilter, EqualOperator, PagingCoursesData, Paginator } from './course-filter';
-import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-  AngularFirestoreDocument,
-  Action,
-  DocumentChangeAction,
-  QueryFn
-} from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
-import { ObservableInput } from 'rxjs/Observable';
+import {CourseFilter, EqualOperator, Paginator, PagingCoursesData} from '../models/course-filter';
+import {Injectable} from '@angular/core';
+import {Action, AngularFirestore, DocumentChangeAction} from 'angularfire2/firestore';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
-import * as moment from 'moment';
-
 // firebase
 import * as firebase from 'firebase';
 
-import { Course } from './course.model';
-import { AFSDecorator } from '@app/shared/afs.decorator';
+import {Course} from '../models/course.model';
+import {AFSDecorator} from 'app/shared/afs.decorator';
 
 @Injectable()
 export class CoursesService {
-  public static get COLLECTION_NAME(): string { return 'courses'; }
+  constructor(private afs: AngularFirestore, private afsd: AFSDecorator<Course>) {
+  }
 
-  constructor(private afs: AngularFirestore, private afsd: AFSDecorator<Course>) { }
+  public static get COLLECTION_NAME(): string {
+    return 'courses';
+  }
 
   public findCoursesByCourseFilter(filter$?: Observable<CourseFilter>): Observable<PagingCoursesData> {
     return filter$.switchMap((courseFilter) => this.afs.collection(CoursesService.COLLECTION_NAME,
@@ -43,6 +36,40 @@ export class CoursesService {
       })
       .snapshotChanges()
       .map(this.actionsCourseMapper(courseFilter.paginator)));
+  }
+
+  public totalCount(): Observable<number> {
+    return this.afs.collection(CoursesService.COLLECTION_NAME).valueChanges().map((courses) => courses.length);
+  }
+
+  public add(course: Course) {
+    return this.afsd.addDocument(CoursesService.COLLECTION_NAME, course)
+  }
+
+  public create(courseId: string, course: Course) {
+    return this.afsd.createDocument(CoursesService.COLLECTION_NAME, courseId, course);
+  }
+
+  public get(courseId: string): Observable<Course> {
+    return this.afsd.getDocument(CoursesService.COLLECTION_NAME, courseId)
+      .snapshotChanges()
+      .map((action: Action<firebase.firestore.DocumentSnapshot>) => {
+        const id = action.payload.id;
+        const data = action.payload.data() as Course;
+        if (!data) {
+          return undefined;
+        }
+        return {id, ...data};
+      });
+  }
+
+  public update(courseId: string, course: Course) {
+    delete course.id;
+    this.afsd.updateDocument(CoursesService.COLLECTION_NAME, courseId, course);
+  }
+
+  public delete(courseId: string) {
+    this.afsd.deleteDocument(CoursesService.COLLECTION_NAME, courseId);
   }
 
   private getDateRangeQuery(queryRef: firebase.firestore.Query, dateEqualOperator: EqualOperator, date: Date) {
@@ -81,46 +108,12 @@ export class CoursesService {
     return queryRef;
   }
 
-  public totalCount(): Observable<number> {
-    return this.afs.collection(CoursesService.COLLECTION_NAME).valueChanges().map((courses) => courses.length);
-  }
-
-  public add(course: Course) {
-    return this.afsd.addDocument(CoursesService.COLLECTION_NAME, course)
-  }
-
-  public create(courseId: string, course: Course) {
-    return this.afsd.createDocument(CoursesService.COLLECTION_NAME, courseId, course);
-  }
-
-  public get(courseId: string): Observable<Course> {
-    return this.afsd.getDocument(CoursesService.COLLECTION_NAME, courseId)
-      .snapshotChanges()
-      .map((action: Action<firebase.firestore.DocumentSnapshot>) => {
-        const id = action.payload.id;
-        const data = action.payload.data() as Course;
-        if (!data) {
-          return undefined;
-        }
-        return { id, ...data };
-      });
-  }
-
-  public update(courseId: string, course: Course) {
-    delete course.id;
-    this.afsd.updateDocument(CoursesService.COLLECTION_NAME, courseId, course);
-  }
-
-  public delete(courseId: string) {
-    this.afsd.deleteDocument(CoursesService.COLLECTION_NAME, courseId);
-  }
-
   private actionsCourseMapper(paginator: Paginator) {
     return (documentChangeActions: DocumentChangeAction[]) => {
       const courses = documentChangeActions.map(action => {
         const data = action.payload.doc.data() as Course;
         const id = action.payload.doc.id;
-        return { id, ...data };
+        return {id, ...data};
       });
       let docs = []
       if (paginator) {

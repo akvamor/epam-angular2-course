@@ -1,4 +1,4 @@
-import { Course } from './../shared/course.model';
+import { Course } from '../shared/models/course.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Component, OnInit, Inject } from '@angular/core';
 
