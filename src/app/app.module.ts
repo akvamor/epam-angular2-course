@@ -1,26 +1,22 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
-import {
-  StoreRouterConnectingModule,
-  RouterStateSerializer,
-} from '@ngrx/router-store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {AngularFireModule} from 'angularfire2';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {RouterStateSerializer, StoreRouterConnectingModule,} from '@ngrx/router-store';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
-import { rootReducers, metaReducers } from './app.reducer.module';
-import { environment } from './../environments/environment';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app.routing.module';
-import { FooterComponent } from './footer/footer.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { SharedModule } from './shared/shared.module';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { CoreModule } from './core/core.module';
-import { CustomRouterStateSerializer } from '@app/shared/custom-router-state-serializer';
+import {metaReducers, rootReducers} from './app.reducer.module';
+import {environment} from './../environments/environment';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app.routing.module';
+import {FooterComponent} from './footer/footer.component';
+import {NavigationComponent} from './navigation/navigation.component';
+import {SharedModule} from './shared/shared.module';
+import {CoreModule} from './core/core.module';
+import {CustomRouterStateSerializer} from '@app/shared/custom-router-state-serializer';
 
 // Initialize Firebase
 export const firebaseConfig = {
@@ -36,8 +32,7 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     NavigationComponent,
-    FooterComponent,
-    UserProfileComponent
+    FooterComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -49,14 +44,15 @@ export const firebaseConfig = {
     SharedModule,
     AppRoutingModule,
 
-    StoreModule.forRoot(rootReducers, { metaReducers }),
+    StoreModule.forRoot(rootReducers, {metaReducers}),
     StoreRouterConnectingModule,
     EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument({maxAge: 15}) : [],
   ],
   providers: [
-    { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
+    {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer},
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

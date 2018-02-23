@@ -14,6 +14,7 @@ import {AuthService} from './../core/auth/auth.service';
 export class NavigationComponent implements OnInit {
 
   public breadcrumbs$: Observable<BreadCrumb[]>;
+  public logo = 'LOGO';
 
   constructor(public authService: AuthService, public router: Router, public activatedRoute: ActivatedRoute) {
   }
@@ -30,7 +31,6 @@ export class NavigationComponent implements OnInit {
     const path = route.routeConfig ? route.routeConfig.path : '';
     let nextUrl = `${url}${path}/`;
 
-    const id = route.snapshot.paramMap.get('id');
     Array.from(route.snapshot.paramMap.keys).forEach((key) => {
       const value = route.snapshot.paramMap.get(key);
       nextUrl = nextUrl.replace(`:${key}`, value);

@@ -1,11 +1,17 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { CoursesGuard } from './courses.guard';
+import {CoursesGuard} from './courses.guard';
+import {Store} from '@ngrx/store';
 
 describe('CoursesGuard', () => {
+  let storeMock;
+
   beforeEach(() => {
+    storeMock = {};
     TestBed.configureTestingModule({
-      providers: [CoursesGuard]
+      providers: [CoursesGuard,
+        {provide: Store, useValue: storeMock},
+      ]
     });
   });
 

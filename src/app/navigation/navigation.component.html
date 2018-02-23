@@ -1,24 +1,25 @@
 <mat-toolbar class="epam-navigation" fxLayout="row" fxFlex color="primary">
-  <div 
-     fxFlex
-     fxLayout="row"
-     fxLayoutGap="10px"
-     fxLayoutAlign="start center">
+  <div
+    fxFlex
+    fxLayout="row"
+    fxLayoutGap="10px"
+    fxLayoutAlign="start center">
     <div class="epam-navigation-card-header-image"></div>
-    <h2>LOGO</h2>
+    <h2>{{logo}}}</h2>
     <div class="epam-navigation-breadcrumbs" fxFlex>
-      
+
       <mat-list fxLayout="row">
         <mat-list-item *ngFor="let breadcrumb of breadcrumbs$ | async">
-            <a [routerLink]="breadcrumb.url" mat-button color="accent">
-          {{ breadcrumb.label }}
-            </a>
-            </mat-list-item>
-        </mat-list>
-      
+          <a [routerLink]="breadcrumb.url" mat-button color="accent">
+            {{ breadcrumb.label }}
+          </a>
+        </mat-list-item>
+      </mat-list>
+
     </div>
   </div>
-  <div *ngIf="authService.user | async" class="epam-navigation-user" fxFlex fxLayout="column" fxLayoutAlign="space-evenly end">
+  <div *ngIf="authService.user | async" class="epam-navigation-user" fxFlex fxLayout="column"
+       fxLayoutAlign="space-evenly end">
     <span>user: {{(authService.user | async)?.email}}</span>
     <button (click)="authService.signOut()">logoff</button>
   </div>
