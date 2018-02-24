@@ -8,7 +8,7 @@ import { Course } from '../shared/models/course.model';
 })
 export class CourseHighlighterDirective implements OnChanges {
 
-  @Input() course: Course;
+  @Input() public course: Course;
   @HostBinding('class.epam-course-highlighter') isHighlighted: boolean;
   @HostBinding('class.epam-course-highlighter-new') isNew: boolean;
   @HostBinding('class.epam-course-highlighter-upcoming') isUpcoming: boolean;
