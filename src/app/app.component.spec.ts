@@ -22,13 +22,12 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', (done) => {
+  it('should create the app', async (done) => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
 
-    setTimeout(() => {
-      expect(app).toBeTruthy();
-      done();
-    }, 2000);
+    await fixture.whenStable();
+    expect(app).toBeTruthy();
+    done();
   });
 });
